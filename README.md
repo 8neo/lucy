@@ -8,7 +8,7 @@ a file sharing/drop site with permanent retention inspired by pomf
 
 3. open cmd in the project folder and run php -S localhost:80 (or you can put it into apache htdocs idk)
 
-3.5. i'd HIGHLY recommend adding a dotfile (if ur doing the htdocs thing) where /files/ is restricted but not the actual files itself like ts):
+4. i'd HIGHLY recommend adding a dotfile (if ur doing the htdocs thing) where /files/ is restricted but not the actual files itself like ts):
 
 Options -Indexes
 
