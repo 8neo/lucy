@@ -1,0 +1,5 @@
+server is located in [place]
+total storage is [storage] mb/gb/tb/pb as of [date]
+[time] file retention
+[size] kb/mb/gb/tb/pb max file size
+[is/is not] open source 

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <title>lucy~ <3</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+
+    <style>
+      .no-js body > *:not(noscript) {
+        display: none !important;
+      }
+      .js body > noscript {
+        display: none !important;
+      }
+
+      #loadingGif {
+        display: none;
+        text-align: center;
+        margin-top: 1em;
+      }
+
+      .copy-btn {
+        margin-left: 10px;
+        padding: 2px 6px;
+        background-color: #3d3b84;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+      }
+
+      .copy-btn:hover {
+        background-color: #3d3b84;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #f1f1f1;
+        text-align: center;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 14px;
+        color: #333;
+      }
+    </style>
+
+    <script>
+      document.documentElement.className =
+        document.documentElement.className.replace(/\bno-js\b/, "js");
+    </script>
+  </head>
+  <body>
+    <div id="toast"></div>
+
+    <noscript>
+      <header><h1>luvr</h1></header>
+      <h2 class="space2">Hey!</h2>
+      <h3>You have JavaScript disabled!</h3>
+      <h3>This website will not function properly with it turned off. :(</h3>
+      <h3>
+        So please,
+        <a href="https://www.enable-javascript.com/" target="_blank"
+          >turn it on</a
+        >!
+      </h3>
+    </noscript>
+
+    <header class="space">
+      <h1><u>lu</u>vr.<u>cy</u>ou</h1>
+    </header>
+    <h3>
+      Report abuse/poke
+      <a href="mailto:luvr@tutamail.com">example@email.com</a>.
+    </h3>
+    <h3>
+      <a href="disallowedextensions.txt" target="_blank">Disallowed files</a>
+      and <a href="information.txt" target="_blank">extra information</a>.
+    </h3>
+    <h3>
+      No illegal content according to
+      <a href="https://example.com/country-flag" target="_blank">[country]</a> law.
+    </h3>
+    <h3>
+      <a href="donate.txt" target="_blank">Got any spare change?</a> I'd like
+      some, plz.
+    </h3>
+    <h3 class="space3">
+      Source code can be found at
+      <a href="https://github.com/8neo/lucy/" target="_blank">the GitHub</a> repo!
+    </h3>
+
+    <div
+      class="space3"
+      id="upload-container"
+      ondrop="handleDrop(event)"
+      ondragover="handleDragOver(event)"
+      ondragleave="handleDragLeave(event)"
+      onpaste="handlePaste(event)"
+    >
+      <div class="upload-button-wrapper">
+        <input type="file" id="file-input" />
+        <label for="file-input" class="custom-file-upload">
+          Drop or paste file(s).
+        </label>
+      </div>
+    </div>
+
+    <div id="loadingGif">
+      <img src="/static/imgs/loading.gif" alt="Loading..." />
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+      // Toast
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      // Upload
+      async function doUpload(file) {
+        document.getElementById("loadingGif").style.display = "block";
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          const response = await fetch("/luvr.php?upload=1", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+
+          document.getElementById("loadingGif").style.display = "none";
+
+          if (response.ok && data.url) {
+            const link = window.location.origin + data.url;
+            const el = document.createElement("p");
+            el.innerHTML = `<a href="${data.url}" target="_blank">${link}</a>
+              <button class="copy-btn" onclick="copyToClipboard('${link}')">Copy</button>`;
+            document.getElementById("result").appendChild(el);
+          } else {
+            showToast(data.error || "An error occurred during file upload.");
+          }
+        } catch (err) {
+          console.error("Upload failed:", err);
+          showToast("An error occurred during file upload.");
+          document.getElementById("loadingGif").style.display = "none";
+        }
+      }
+
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast("Copied!");
+        });
+      }
+
+      document
+        .getElementById("file-input")
+        .addEventListener("change", function () {
+          if (this.files.length) doUpload(this.files[0]);
+        });
+
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.getElementById("upload-container").classList.add("drag-over");
+      }
+
+      function handleDragLeave(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document
+          .getElementById("upload-container")
+          .classList.remove("drag-over");
+      }
+
+      async function handleDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document
+          .getElementById("upload-container")
+          .classList.remove("drag-over");
+        if (e.dataTransfer.files.length) {
+          await doUpload(e.dataTransfer.files[0]);
+        }
+      }
+
+      async function handlePaste(e) {
+        const items = Array.from(e.clipboardData.items);
+        const fileItem = items.find((i) => i.kind === "file");
+        if (fileItem) {
+          await doUpload(fileItem.getAsFile());
+        }
+      }
+    </script>
+    <img class="bottom-right-img" src="/static/imgs/lucy.png" />
+
+  </body>
+</html>

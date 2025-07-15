@@ -1,0 +1,3 @@
+all of the following file types are not allowed to be uploaded:
+
+7z, ace, accdb, apk, app, arj, asm, asp, aspx, bak, bat, bin, bz2, cab, c, cfg, cgi, cmake, com, cpp, crx, cs, csproj, dat, desktop, dll, dmg, drv, eml, exe, gz, h, hpp, html, htm, ics, img, ini, iso, jar, java, js, jsp, kgb, ldb, ldf, lnk, log, lzma, make, mdb, msg, msi, ndf, nrg, oex, ocx, paq8, php, pif, pl, prog, proj, ps1, py, qcow2, rar, reg, rb, run, rs, safariextz, sav, scr, sh, sln, sql, sqlite, sys, tar, temp, tmp, toast, torrent, ts, url, vb, vbproj, vbs, vdi, vhd, vhdx, vmdk, vxd, workspace, wsf, xcodeproj, xpi, xz, zpaq, zip, zst
